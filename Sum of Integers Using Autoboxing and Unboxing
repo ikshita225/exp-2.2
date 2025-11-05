@@ -1,0 +1,39 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class SumIntegersAutoboxing {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Integer> list = new ArrayList<>();
+
+        System.out.println("Enter integers as strings (type \"done\" to finish):");
+
+        while (true) {
+            System.out.print("Enter integer (or done): ");
+            String input = scanner.nextLine().trim();
+            if (input.equalsIgnoreCase("done")) {
+                break;
+            }
+            try {
+                // parse string to primitive int
+                int value = Integer.parseInt(input);
+                // autoboxing: primitive int → Integer object
+                list.add(value);
+            } catch (NumberFormatException nfe) {
+                System.out.println("Invalid integer input, please try again.");
+            }
+        }
+
+        // calculate sum using unboxing: Integer → int automatically
+        int sum = 0;
+        for (Integer numObj : list) {
+            // unboxing happens when assigning to int
+            sum += numObj;
+        }
+
+        System.out.println("You entered: " + list);
+        System.out.println("Sum of entered integers = " + sum);
+
+        scanner.close();
+    }
+}

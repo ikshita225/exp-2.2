@@ -1,0 +1,67 @@
+import java.io.*;
+
+// Student class that implements Serializable
+class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private int studentID;
+    private String name;
+    private double grade;
+
+    public Student(int studentID, String name, double grade) {
+        this.studentID = studentID;
+        this.name = name;
+        this.grade = grade;
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{ID=" + studentID + ", name='" + name + "', grade=" + grade + "}";
+    }
+}
+
+public class StudentSerializationDemo {
+    public static void main(String[] args) {
+        String filename = "student.ser";
+
+        // Create a Student object
+        Student s1 = new Student(101, "Alice", 9.5);
+
+        // Serialization: write object to file
+        try (FileOutputStream fos = new FileOutputStream(filename);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+
+            oos.writeObject(s1);
+            System.out.println("Student object has been serialized to " + filename);
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        // Deserialization: read object back from file
+        try (FileInputStream fis = new FileInputStream(filename);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+            Object obj = ois.readObject();
+            if (obj instanceof Student) {
+                Student s2 = (Student) obj;
+                System.out.println("Student object has been deserialized.");
+                System.out.println("Deserialized Student data: " + s2);
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
